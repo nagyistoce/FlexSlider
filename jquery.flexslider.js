@@ -19,7 +19,7 @@
       slider.vars = $.extend({}, $.flexslider.defaults, options);
       slider.data('flexslider', true);
 	  slider.container = $('.slides', slider).first();
-	  slider.slides = $('.slides:first > li', slider);
+	  slider.slides = $('.slides:first > ' + options.itemSelector, slider);
       slider.count = slider.slides.length;
       slider.animating = false;
       slider.currentSlide = slider.vars.slideToStart;
@@ -69,7 +69,7 @@
           slider.container.append(slider.slides.filter(':first').clone().addClass('clone')).prepend(slider.slides.filter(':last').clone().addClass('clone'));
         }
         //create newSlides to capture possible clones
-		slider.newSlides = $('.slides:first > li', slider);
+		slider.newSlides = $('.slides:first > ' + options.itemSelector, slider);
         var sliderOffset = (-1 * (slider.currentSlide + slider.cloneOffset));
         if (slider.vertical) {
           slider.newSlides.css({"display": "block", "width": "100%", "float": "left"});
@@ -560,6 +560,7 @@
     pauseOnHover: false,            //Boolean: Pause the slideshow when hovering over slider, then resume when no longer hovering
     controlsContainer: "",          //Selector: Declare which container the navigation elements should be appended too. Default container is the flexSlider element. Example use would be ".flexslider-container", "#container", etc. If the given element is not found, the default action will be taken.
     manualControls: "",             //Selector: Declare custom control navigation. Example would be ".flex-control-nav li" or "#tabs-nav li img", etc. The number of elements in your controlNav should match the number of slides/tabs.
+    itemSelector: "li",
     start: function(){},            //Callback: function(slider) - Fires when the slider loads the first slide
     before: function(){},           //Callback: function(slider) - Fires asynchronously with each slider animation
     after: function(){},            //Callback: function(slider) - Fires after each slider animation completes
@@ -569,8 +570,8 @@
   //FlexSlider: Plugin Function
   $.fn.flexslider = function(options) {
     return this.each(function() {
-      if ($(this).find('.slides li').length == 1) {
-        $(this).find('.slides li').fadeIn(400);
+      if ($(this).find('.slides ' + options.itemSelector).length == 1) {
+        $(this).find('.slides ' + options.itemSelector).fadeIn(400);
       }
       else if ($(this).data('flexslider') != true) {
         new $.flexslider($(this), options);
